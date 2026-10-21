@@ -1,0 +1,57 @@
+{
+  "origin": "https://REPLACE_WITH_PILOT_DOMAIN",
+  "scope": "prompt-only-synthetic",
+  "validUntil": "REQUIRED: reviewed expiry, maximum 90 days",
+  "owners": {
+    "operations": "REQUIRED: named operator and escalation contact",
+    "security": "REQUIRED: reviewer and escalation contact",
+    "data": "REQUIRED: retention/backup owner"
+  },
+  "gates": {
+    "identity": {
+      "approved": false,
+      "reviewer": "REQUIRED: actual reviewer",
+      "reportSha256": "REQUIRED: full SHA-256 of the real acceptance report"
+    },
+    "signer": {
+      "approved": false,
+      "reviewer": "REQUIRED: actual reviewer",
+      "reportSha256": "REQUIRED: full SHA-256 of the real acceptance report"
+    },
+    "secrets": {
+      "approved": false,
+      "reviewer": "REQUIRED: actual reviewer",
+      "reportSha256": "REQUIRED: full SHA-256 of the real acceptance report"
+    },
+    "securityReview": {
+      "approved": false,
+      "reviewer": "REQUIRED: actual reviewer",
+      "reportSha256": "REQUIRED: full SHA-256 of the real acceptance report"
+    },
+    "recovery": {
+      "approved": false,
+      "reviewer": "REQUIRED: actual reviewer",
+      "reportSha256": "REQUIRED: full SHA-256 of the real acceptance report"
+    },
+    "load": {
+      "approved": false,
+      "reviewer": "REQUIRED: actual reviewer",
+      "reportSha256": "REQUIRED: full SHA-256 of the real acceptance report"
+    },
+    "isolation": {
+      "approved": false,
+      "reviewer": "REQUIRED: actual reviewer",
+      "reportSha256": "REQUIRED: full SHA-256 of the real acceptance report"
+    },
+    "retention": {
+      "approved": false,
+      "reviewer": "REQUIRED: actual reviewer",
+      "reportSha256": "REQUIRED: full SHA-256 of the real acceptance report"
+    },
+    "incident": {
+      "approved": false,
+      "reviewer": "REQUIRED: actual reviewer",
+      "reportSha256": "REQUIRED: full SHA-256 of the real acceptance report"
+    }
+  }
+}

@@ -1,0 +1,33 @@
+[Unit]
+Description=Bayora separately owned evidence signer
+After=network.target
+
+[Service]
+Type=simple
+User=bayora-signer
+Group=bayora-ipc
+WorkingDirectory=/opt/bayora
+EnvironmentFile=/etc/bayora/signer.env
+ExecStart=/usr/bin/node /opt/bayora/scripts/evidence-signer.mjs
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=30
+UMask=0077
+RuntimeDirectory=bayora-signer
+RuntimeDirectoryMode=0750
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictAddressFamilies=AF_UNIX
+ReadWritePaths=/var/lib/bayora-signer /run/bayora-signer
+InaccessiblePaths=/var/lib/bayora /etc/bayora/api-secrets
+TasksMax=32
+LimitNOFILE=256
+
+[Install]
+WantedBy=multi-user.target

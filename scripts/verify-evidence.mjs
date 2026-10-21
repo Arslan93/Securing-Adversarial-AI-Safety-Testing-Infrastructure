@@ -1,11 +1,21 @@
 import { readFileSync } from "node:fs";
-import { verifyEvidence } from "../server/core.mjs";
+import { verifyPackage } from "../server/evidence/signatures.mjs";
 try {
   if (!process.argv[2])
     throw Error("Usage: node scripts/verify-evidence.mjs <evidence.json>");
   console.log(
     JSON.stringify(
-      verifyEvidence(JSON.parse(readFileSync(process.argv[2], "utf8"))),
+      verifyPackage(JSON.parse(readFileSync(process.argv[2], "utf8")), {
+        trustedKeys: process.argv.includes("--trusted-key")
+          ? [
+              readFileSync(
+                process.argv[process.argv.indexOf("--trusted-key") + 1],
+                "utf8",
+              ),
+            ]
+          : [],
+        requireSignature: process.argv.includes("--require-signature"),
+      }),
       null,
       2,
     ),

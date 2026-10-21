@@ -1,0 +1,22 @@
+# CPU-only build for hosts where the official GPU image exceeds available disk.
+ARG NODE_IMAGE
+FROM ${NODE_IMAGE}
+ARG OLLAMA_ARCHIVE_URL
+ARG OLLAMA_ARCHIVE_SHA256
+USER root
+RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates curl zstd libgomp1 libopenblas0 \
+    && rm -rf /var/lib/apt/lists/*
+RUN test -n "$OLLAMA_ARCHIVE_SHA256" \
+    && curl --fail --location --retry 2 "$OLLAMA_ARCHIVE_URL" -o /tmp/ollama.tar.zst \
+    && echo "$OLLAMA_ARCHIVE_SHA256  /tmp/ollama.tar.zst" | sha256sum --check - \
+    && tar --zstd -xf /tmp/ollama.tar.zst -C /usr/local \
+      --exclude='lib/ollama/cuda*' --exclude='lib/ollama/rocm*' \
+      --exclude='lib/ollama/vulkan*' --exclude='lib/ollama/mlx*' \
+      --exclude='lib/ollama/*cuda*' --exclude='lib/ollama/*cublas*' \
+    && rm /tmp/ollama.tar.zst \
+    && ln -s /usr/local/bin/ollama /bin/ollama \
+    && node --version
+COPY runtime/bridge.mjs runtime/probe.mjs /app/
+ENV HOME=/tmp OLLAMA_HOST=127.0.0.1:11434 OLLAMA_MODELS=/models OLLAMA_NO_CLOUD=1 LD_LIBRARY_PATH=/usr/local/lib/ollama
+USER 65532:65532
+ENTRYPOINT ["/bin/ollama", "serve"]

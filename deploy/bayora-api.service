@@ -1,0 +1,35 @@
+[Unit]
+Description=Bayora restricted pilot API and worker broker
+After=network-online.target bayora-signer.service
+Requires=bayora-signer.service
+
+[Service]
+Type=simple
+User=bayora-api
+Group=bayora-api
+SupplementaryGroups=bayora-ipc
+WorkingDirectory=/opt/bayora
+EnvironmentFile=/etc/bayora/api.env
+ExecStart=/usr/bin/node /opt/bayora/server/index.mjs
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=90
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+LockPersonality=true
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+ReadWritePaths=/var/lib/bayora
+InaccessiblePaths=/var/lib/bayora-signer
+TasksMax=256
+LimitNOFILE=4096
+
+[Install]
+WantedBy=multi-user.target

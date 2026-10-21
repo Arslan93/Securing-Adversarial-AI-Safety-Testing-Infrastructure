@@ -64,6 +64,7 @@ test("rehashed manifest must still match creation event", () => {
 });
 test("corpus contains 20 bounded synthetic cases and benign controls", () => {
   assert.equal(cases.length, 20);
+  assert.equal(new Set(cases.map((c) => c.prompt)).size, 20);
   assert.equal(cases.filter((c) => c.benign).length, 4);
   assert.ok(cases.every((c) => c.prompt.length < 500));
 });

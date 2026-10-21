@@ -1,0 +1,8 @@
+export const ACTIVE_STATUSES = new Set([
+  "VALIDATING",
+  "QUEUED",
+  "PROVISIONING",
+  "RUNNING",
+  "EVALUATING",
+  "FINALIZING",
+]);

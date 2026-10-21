@@ -1,6 +1,16 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-export default defineConfig({
-  plugins: [react()],
-  server: { host: "127.0.0.1", proxy: { "/api": "http://127.0.0.1:3001" } },
+import { loadLocalEnv, readConfig } from "./server/config.mjs";
+loadLocalEnv();
+export default defineConfig(({ command }) => {
+  const config = readConfig(process.env, { serving: command === "serve" });
+  return {
+    plugins: [react()],
+    server: {
+      host: config.host,
+      port: config.frontendPort,
+      strictPort: true,
+      proxy: { "/api": `http://${config.host}:${config.port}` },
+    },
+  };
 });

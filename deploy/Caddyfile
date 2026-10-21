@@ -1,0 +1,14 @@
+# Set BAYORA_DOMAIN to the exact hostname in BAYORA_PUBLIC_ORIGIN.
+# Single direct TLS proxy; do not add a CDN without reviewing proxy trust.
+{$BAYORA_DOMAIN} {
+    request_body {
+        max_size 1MB
+    }
+    reverse_proxy 127.0.0.1:3001 {
+        header_up Host {$BAYORA_DOMAIN}
+        header_up X-Forwarded-Host {$BAYORA_DOMAIN}
+        header_up X-Forwarded-Proto {scheme}
+        header_up X-Forwarded-For {remote_host}
+    }
+    # Do not enable unredacted request/query logs: OIDC callback URLs carry codes.
+}
